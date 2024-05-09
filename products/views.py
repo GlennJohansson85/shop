@@ -21,3 +21,7 @@ def products(request, category_slug=None):
         'product_count': product_count,
     }
     return render(request,'products/products.html', context)
+
+
+def product_detail(request, category_slug, product_slug):
+    return render(request, 'products/product_detail.html')
