@@ -15,19 +15,19 @@ def products(request, category_slug=None):
     if category_slug    != None:
         categories      = get_object_or_404(Category,slug=category_slug)
         products        = Product.objects.filter(category=categories, is_available=True)
-        paginator       = Paginator(products, 8) # No of items/page
+        paginator       = Paginator(products, 3)
         page            = request.GET.get('page')
-        page_prod_no    = paginator.get_page(page)
+        paged_products  = paginator.get_page(page)
         product_count   = products.count()
     else: 
         products        = Product.objects.all().filter(is_available=True)
-        paginator       = Paginator(products, 8)
+        paginator       = Paginator(products, 3)
         page            = request.GET.get('page')
-        page_prod_no    = paginator.get_page(page)
+        paged_products  = paginator.get_page(page)
         product_count   = products.count()
 
     context = {
-        'products'      : page_prod_no,
+        'products'      : paged_products,
         'product_count' : product_count,
     }
     return render(request,'products/products.html', context)
