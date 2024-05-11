@@ -4,6 +4,7 @@ from products.models import Product
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.http import HttpResponse
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -14,7 +15,9 @@ def _cart_id(request):
 
 def add_cart(request, product_id):
     color = request.GET['color']
-    size = request.GET['color']
+    # size = request.GET['size']
+    return HttpResponse(color)
+    exit()
 
     product = Product.objects.get(id=product_id) # GET product id
     try:
