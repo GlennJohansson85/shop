@@ -56,5 +56,10 @@ $(document).ready(function() {
 
     
 }); 
-// jquery end
 
+//________________________________________________________  Registration Successfull message
+setTimeout(function(){
+$('#message').fadeOut('slow')
+}, 3000) 
+
+// jquery end

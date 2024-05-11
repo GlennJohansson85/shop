@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from .models import Account
+from django.contrib import messages
 
 
 #___________________________________________________________  DEF REGISTER
@@ -24,9 +25,11 @@ def register(request):
             )
             user.phone_number = phone_number
             user.save()
+            messages.success(request, 'Registration Successfull!')
+            return redirect('register')
     else:
         form = RegistrationForm()
-    context = {
+    context  = {
         'form': form,
     }
     return render(request, 'accounts/register.html', context)
