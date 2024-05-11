@@ -1,4 +1,4 @@
-#_________________________________________________________________________  ACCOUNTS/MODELS.PY  -->
+#_________________________________________________________________________  ACCOUNTS/MODELS.PY
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
