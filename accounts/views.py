@@ -81,5 +81,29 @@ def signout(request):
 
 
 #___________________________________________________________  DEF ACTIVATE
-def activate(request):
-    return
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Account is activated!')
+        return redirect('signin')
+    else:
+        messages.error(request, 'invalid activation link')
+    return redirect('register')
+
+
+#___________________________________________________________  DEF DASHBOARD
+@login_required(login_url = 'signin') # or 'login'
+def dashboard(request):
+    return render (request, 'accounts/dashboard.html')
+
+
+#___________________________________________________________  DEF FORGOTTPASSWORD
+def forgotPassword(request):
+    return render (request, 'accounts/forgotpassword.html')
