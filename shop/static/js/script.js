@@ -59,7 +59,5 @@ $(document).ready(function() {
 
 //________________________________________________________  Registration Successfull message
 setTimeout(function(){
-$('#message').fadeOut('slow')
+    $('#message').fadeOut('slow')
 }, 3000) 
-
-// jquery end

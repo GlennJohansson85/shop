@@ -13,10 +13,10 @@ class MyAccountManager(BaseUserManager):
                   raise ValueError('Username required')
             
             user = self.model(
-                  email = self.normalize_email(email), # Capital = auto small letters
-                  username = username,
-                  first_name = first_name,
-                  last_name = last_name,
+                  email       = self.normalize_email(email), # Capital = auto small letters
+                  username    = username,
+                  first_name  = first_name,
+                  last_name   = last_name,
             )
 
             user.set_password(password)
@@ -56,8 +56,8 @@ class Account(AbstractBaseUser):
       is_superadmin = models.BooleanField(default=False)
 
       # Login with email
-      USERNAME_FIELD = 'email'
-      REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+      USERNAME_FIELD    = 'email'
+      REQUIRED_FIELDS   = ['username', 'first_name', 'last_name']
 
       objects = MyAccountManager()
 
