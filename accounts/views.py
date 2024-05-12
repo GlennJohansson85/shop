@@ -43,6 +43,7 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
+            messages.success(request, 'Activation link sent to your email!')
             return redirect('/accounts/signin/?command=verification&email='+email)
     else:
         form = RegistrationForm()
