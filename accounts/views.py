@@ -1,7 +1,9 @@
+#_________________________________________________________________________  ACCOUNTS/VIEWS.PY
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from .models import Account
 from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 
 
 #___________________________________________________________  DEF REGISTER
@@ -43,15 +45,18 @@ def signin(request):
         user        = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            auth.signin(request, user)
+            auth.login(request, user)
             # messages.success(request, 'Login Successfull!')
             return redirect('home')
         else:
-            messages.error(request, 'Invalid login credentials')
+            messages.error(request, 'Invalid Login Credentials.')
             return redirect('signin')
     return render(request, 'accounts/signin.html')
 
 
 #___________________________________________________________  DEF SIGNOUT
+@login_required(login_url = 'login')
 def signout(request):
-    return render
+    auth.logout(request)
+    messages.success(request, 'Loggout Successful!')
+    return redirect('signin')
