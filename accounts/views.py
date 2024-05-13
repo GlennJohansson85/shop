@@ -65,8 +65,8 @@ def signin(request):
 
         if user is not None:
             auth.login(request, user)
-            # messages.success(request, 'Login Successfull!')
-            return redirect('home')
+            messages.success(request, 'Login Successfull!')
+            return redirect('dashboard')
         else:
             messages.error(request, 'Invalid Login Credentials.')
             return redirect('signin')
