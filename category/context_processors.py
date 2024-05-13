@@ -1,4 +1,3 @@
-#_________________________________________________________________________  CATEGORY/CONTEXT_PROCESSORS.PY  -->
 from .models import Category
 
 

@@ -1,0 +1,147 @@
+<!--------------------------------------------------------  PRODUCTS/PRODUCT_DETAIL.HTML -->
+<h2>Checkout</h2>
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+
+        <div class="row">
+            <aside class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb4">Billing Address</h4>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">First Name:</label>
+                                    <input type="text" name="first_name" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Last Name:</label>
+                                    <input type="text" name="last_name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Email:</label>
+                                    <input type="text" name="lemail" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Phone Number:</label>
+                                    <input type="text" name="phone" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Address:</label>
+                                    <input type="text" name="address" class="form-control" required>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Address 2: (optional)</label>
+                                    <input type="text" name="address" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">City:</label>
+                                    <input type="text" name="city" class="form-control" required>
+                                    <!-- select box, countryfield-->
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Country:</label>
+                                    <input type="text" name="country" class="form-control" required>
+                                    <!-- select box, countryfield-->
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Anything you want to share regarding the order?</label>
+                                    <textarea name="order_note" class="form-control"></textarea>
+                                </div>
+                            </div>
+            
+                    </div>
+                </div>
+            </aside>
+            <aside class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Product</th>
+                                    <th scope="col" width="120">Quantity</th>
+                                    <th scope="col" width="120">Price</th>
+                                    <th scope="col" class="text-right" width="200"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="{{ cart_item.product.images.url }}" class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{ cart_item.product.product_name }}</a>
+                                                <p class="text-muted small">
+                                                    {% if cart_item.variations.all %}
+                                                        {% for item in cart_item.variations.all %}
+                                                            {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    
+                                    <td>
+                                        <div class="col">
+                                            <div class="input-group input-spinner">
+                                                <div class="input-group-append">
+                                                    <a href="{% url 'remove_cart' cart_item.product.id cart_item_id %}" class="btn btn-light" type="button" id="button-plus"><i class="fa fa-minus"></i></a>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{ cart_item.quantity }}">
+                                                <div class="input-group-prepend">
+                                                    <form action="{% url 'add_cart' cart_item.product.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        {% for item in cart_item.variations.all %}
+                                                            <input type="hidden" name="{{ item.variation_category | lower }}" value="{{ item.variation_value | capfirst }}">
+                                                        {% endfor %}
+                                                        <button class="btn btn-light" type="submit" id="button-minus"><i class="fa fa-plus"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">${{ cart_item.sub_total }}</var>
+                                            <small class="text-muted">${{ cart_item.product.prize }} each </small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                    <a href="{% url 'remove_cart_item' cart_item.product.id cart_item_id %}" onclick="return confirm('Confirm to remove the product from your cart')" class="btn btn-danger">Remove</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" name="submit" class="btn btn-primary btn-block">Place Order</button>
+                        <a href="{% url 'products' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                    </form>
+                    </div>
+                </div>
+            </aside>
+        
+        </div>
+    </div>
+</section>
+
+{% endblock %}
