@@ -1,11 +1,15 @@
-<!------------------------------------------------------------------  ACCOUNTS/ACCOUNT_VERIFICATION.HTML  -->
 {% autoescape off %}
 
-Dear {{user.first_name}},
+Dear {{user.first_name}}, 
 
-Welcome to I SHOP! We cover all your needs!
+Welcome to iShop. 
 
-To activate your account - Please click on the link below!
+To activate your account, just click on the link below:
+
 http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+Kind Regards
+
+iShop
 
 {% endautoescape %}

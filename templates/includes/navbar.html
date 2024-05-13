@@ -34,7 +34,7 @@
                 <div class="col-lg col-sm col-md col-6 flex-grow-0">
                     <div class="category-wrap dropdown d-inline-block float-right">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bars"></i> All category
+                            <i class="fa fa-bars"></i>All category
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{% url 'products' %}">All Products</a>
@@ -63,10 +63,10 @@
 
                         {% if user.id is None %}
                         <div class="widget-header">
-                            <small class="title text-muted">Welcome guest!</small>
+                            <small class="title text-muted">Welcome Guest!</small>
                             <div>
-                                <a href="{% url 'signin' %}">Sign in</a> <span class="dark-transp"> | </span>
-                                <a href="{% url 'register' %}"> Register</a>
+                                <a href="{% url 'signin' %}">Login</a> <span class="dark-transp"> | </span>
+                                <a href="{% url 'register' %}">Register</a>
                             </div>
                         </div>
 
