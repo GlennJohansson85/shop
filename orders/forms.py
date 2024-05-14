@@ -16,5 +16,5 @@ class OrderForm(forms.ModelForm):
             'address_line_2',
             'country',
             'city',
-            'notes',
+            'order_note',
             ]
