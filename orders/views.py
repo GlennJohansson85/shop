@@ -5,9 +5,28 @@ from .forms import OrderForm
 import datetime
 from .models import Order, Payment, OrderProduct
 
+import json
 
 #___________________________________________________________  CLASS PAYMENTS
 def payments(request):
+    body = json.loads(request.body)
+    order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
+    print(body)
+    # Save transaction details
+    payment = Payment(
+        user = request.user,
+        payment_id = body['transID'],
+        payment_method = body['payment_method'],
+        amount_paid = order.order_total,
+        status = body['status'],
+    )
+    payment.save()
+
+    order.payment = payment
+    order.is_ordered = True
+    order.save()
+
+
     return render(request, 'orders/payments.html')
 
 
