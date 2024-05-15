@@ -39,7 +39,7 @@ class RegistrationForm(forms.ModelForm):
             self.fields[field].widget.attrs['class']            = 'form-control'
 
 
-
+#___________________________________________________________  CLASS USERFORM
 class UserForm(forms.ModelForm):
     class Meta:
         model = Account
@@ -51,7 +51,7 @@ class UserForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-
+#___________________________________________________________  CLASS USERPROFILEFORM
 class UserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(required=False, error_messages={'Invalid':("Image files only.")}, widget=forms.FileInput)
     class Meta:
