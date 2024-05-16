@@ -1,19 +1,14 @@
 #  SHOP/SETTINGS.PY
-import os, env
+import os
 import dj_database_url
 from pathlib import Path
-from decouple import config
 
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-
-
 SECRET_KEY = os.environ.get('SECRET_KEY','')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ishop']
 
 
 INSTALLED_APPS = [
@@ -64,13 +59,24 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 AUTH_USER_MODEL = 'accounts.Account'
 
 
-DATABASES = {
-   'default': {
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME':BASE_DIR / 'db.sqlite3',
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
+#DATABASES = {
+#   'default': {
+#        'ENGINE':'django.db.backends.sqlite3',
+#        'NAME':BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 
 AUTH_PASSWORD_VALIDATORS = [

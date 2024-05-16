@@ -5,17 +5,12 @@ from .models import Account, UserProfile
 from orders.models import Order, OrderProduct
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-
-
-#___________________________________________________________  VERIFICATION EMAIL
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
-
 from cart.views import _cart_id
 from cart.models import Cart, CartItem
 
@@ -23,36 +18,38 @@ import requests
 
 #___________________________________________________________  DEF REGISTER
 def register(request):
+    '''
+    Handles user registration by processing the submitted form, creating a user account, 
+    and sending an email verification link.
+    '''
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            first_name          = form.cleaned_data['first_name']
-            last_name           = form.cleaned_data['last_name']
-            phone_number        = form.cleaned_data['phone_number']
-            email               = form.cleaned_data['email']
-            password            = form.cleaned_data['password']
-            username            = email.split("@")[0]
-            user                = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
-            user.phone_number   = phone_number
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            phone_number = form.cleaned_data['phone_number']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            username = email.split("@")[0]
+            user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+            user.phone_number = phone_number
             user.save()
-
-            # USER ACTIVATION
-            current_site        = get_current_site(request)
-            mail_subject        = 'Please activate your account'
-            message             = render_to_string('accounts/account_verification_email.html', {
+            current_site = get_current_site(request)
+            mail_subject = 'Please activate your account'
+            message = render_to_string('accounts/account_verification_email.html', {
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
             })
-            to_email            = email
-            send_email          = EmailMessage(mail_subject, message, to=[to_email])
+            to_email = email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
             messages.success(request, 'Activation link sent to your email!')
             return redirect('/accounts/signin/?command=verification&email='+email)
     else:
-        form                    = RegistrationForm()
-    context                     = {
+        form = RegistrationForm()
+    context = {
         'form': form,
     }
     return render(request, 'accounts/register.html', context)
@@ -61,17 +58,21 @@ def register(request):
 
 #___________________________________________________________  DEF SIGNIN
 def signin(request):
-    if request.method           == "POST":
-        email                   = request.POST['email']
-        password                = request.POST['password']
-        user                    = auth.authenticate(email=email, password=password)
+    '''
+    Handles user sign-in by authenticating the provided email and password, 
+    and manages the user's cart items upon successful login.
+    '''
+    if request.method == "POST":
+        email = request.POST['email']
+        password = request.POST['password']
+        user = auth.authenticate(email=email, password=password)
 
         if user is not None:
             try:
-                cart            = Cart.objects.get(cart_id=_cart_id(request))
+                cart = Cart.objects.get(cart_id=_cart_id(request))
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
                 if is_cart_item_exists:
-                    cart_item   = CartItem.objects.filter(cart=cart)
+                    cart_item = CartItem.objects.filter(cart=cart)
 
                     # GET product variation by cart id
                     product_variation = []
@@ -80,9 +81,9 @@ def signin(request):
                         product_variation.append(list(variation))
 
                     # GET cart items from user - access products variations
-                    cart_item   = CartItem.objects.filter(user=user)
+                    cart_item = CartItem.objects.filter(user=user)
                     ex_var_list = []
-                    id          = []
+                    id = []
                     for item in cart_item:
                         existing_variation = item.variations.all()
                         ex_var_list.append(list(existing_variation))
@@ -93,16 +94,16 @@ def signin(request):
 
                     for pr in product_variation:
                         if pr in ex_var_list:
-                            index           = ex_var_list.index(pr)
-                            item_id         = id[index]
-                            item            = CartItem.objects.get(id=item_id)
-                            item.quantity   += 1
-                            item.user       = user
+                            index = ex_var_list.index(pr)
+                            item_id = id[index]
+                            item = CartItem.objects.get(id=item_id)
+                            item.quantity += 1
+                            item.user = user
                             item.save()
                         else:
-                            cart_item       = CartItem.objects.filter(cart=cart)
+                            cart_item = CartItem.objects.filter(cart=cart)
                             for item in cart_item:
-                                item.user   = user
+                                item.user = user
                                 item.save()
             except:
                 pass
@@ -126,6 +127,9 @@ def signin(request):
 #___________________________________________________________  DEF SIGNOUT
 @login_required(login_url = 'signin')
 def signout(request):
+    '''
+    Logs out the currently authenticated user and redirects them to the sign-in page.
+    '''
     auth.logout(request)
     messages.success(request, 'Loggout Successful!')
     return redirect('signin')
@@ -133,11 +137,14 @@ def signout(request):
 
 #___________________________________________________________  DEF ACTIVATE
 def activate(request, uidb64, token):
+    '''
+    Activates a user's account based on a provided UID and token from an email link.
+    '''
     try:
-        uid     = urlsafe_base64_decode(uidb64).decode()
-        user    = Account._default_manager.get(pk=uid)
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
     except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
-        user    = None
+        user = None
 
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
@@ -152,6 +159,9 @@ def activate(request, uidb64, token):
 #___________________________________________________________  DEF DASHBOARD
 @login_required(login_url = 'signin')
 def dashboard(request):
+    '''
+    Displays the user's dashboard with their order count and profile information.
+    '''
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = orders.count()
 
@@ -163,8 +173,11 @@ def dashboard(request):
     return render (request, 'accounts/dashboard.html', context)
 
 
-#___________________________________________________________  DEF FORGOTTPASSWORD
+#___________________________________________________________  DEF RESET_PASSWORD
 def reset_password(request):
+    '''
+    Handles password reset by updating the user's password.
+    '''
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -186,6 +199,9 @@ def reset_password(request):
 #___________________________________________________________  DEF MY_ORDERS
 @login_required(login_url='signin')
 def my_orders(request):
+    '''
+    Displays a list of the authenticated user's orders that have been completed.
+    '''
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     context = {
         'orders': orders,
@@ -196,6 +212,9 @@ def my_orders(request):
 #___________________________________________________________  DEF EDIT_PROFILE
 @login_required(login_url='signin')
 def edit_profile(request):
+    '''
+    Allows authenticated users to edit their profile information.
+    '''
     userprofile = get_object_or_404(UserProfile, user=request.user)
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
@@ -221,6 +240,9 @@ def edit_profile(request):
 #___________________________________________________________  DEF CHANGE_PASSOWORD
 @login_required(login_url='signin')
 def change_password(request):
+    '''
+    Allows authenticated users to change their password through dashboard
+    '''
     if request.method == 'POST':
         current_password = request.POST['current_password']
         new_password = request.POST['new_password']
@@ -247,6 +269,9 @@ def change_password(request):
 #___________________________________________________________  DEF ORDER_DETAIL
 @login_required(login_url='signin')
 def order_detail(request, order_id):
+    '''
+    Displays the details of a specific order for the authenticated user.
+    '''
     order_detail = OrderProduct.objects.filter(order__order_number=order_id)
     order = Order.objects.get(order_number=order_id)
     subtotal = 0

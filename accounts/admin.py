@@ -6,7 +6,10 @@ from django.utils.html import format_html
 
 
 #___________________________________________________________  CLASS ACCOUNTADMIN
-class AccountAdmin(UserAdmin): # Displays Django admin dashboard
+class AccountAdmin(UserAdmin):
+      '''
+      Custom admin configuration for the Account model.
+      '''
       list_display       = ('email','first_name','last_name','username','last_login','date_joined','is_active')
       list_display_links = ('email','first_name','last_name')
       readonly_fields    = ('last_login', 'date_joined')
@@ -20,6 +23,9 @@ class AccountAdmin(UserAdmin): # Displays Django admin dashboard
 
 #___________________________________________________________  CLASS USERPROFILEADMIN
 class UserProfileAdmin(admin.ModelAdmin):
+      '''
+      Custom admin configuration for the UserProfile model.
+      '''
       def thumbnail(self, object):
             return format_html('<img src="{}" width="30" style="border-radius:50%;">'.format(object.profile_picture.url))
       thumbnail.short_description = 'Profile Picture'
