@@ -15,7 +15,7 @@ from cart.models import Cart, CartItem
 
 import requests
 
-#___________________________________________________________  DEF REGISTER
+#___________________________________________________________  register
 def register(request):
     '''
     Handles user registration by processing the submitted form, creating a user account, 
@@ -30,7 +30,13 @@ def register(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = email.split("@")[0]
-            user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+            user = Account.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                username=username,
+                password=password
+                )
             user.phone_number = phone_number
             user.save()
             current_site = get_current_site(request)
@@ -55,7 +61,7 @@ def register(request):
 
 
 
-#___________________________________________________________  DEF SIGNIN
+#___________________________________________________________  signin
 def signin(request):
     '''
     Handles user sign-in by authenticating the provided email and password, 
@@ -123,7 +129,7 @@ def signin(request):
     return render(request, 'accounts/signin.html')
 
 
-#___________________________________________________________  DEF SIGNOUT
+#___________________________________________________________  signout
 @login_required(login_url = 'signin')
 def signout(request):
     '''
@@ -134,10 +140,14 @@ def signout(request):
     return redirect('signin')
 
 
-#___________________________________________________________  DEF ACTIVATE
+#___________________________________________________________  activate
 def activate(request, uidb64, token):
     '''
-    Activates a user's account based on a provided UID and token from an email link.
+    Activate the user's account by decoding the user ID from a URL-safe base64
+    encoded string (`uidb64`) and retrieving the corresponding user object.
+    Validate the token against the user object using Django's default token generator.
+    If the token is valid, set the `is_active` flag of the user to True, indicating
+    that the account is activated. Display a success message upon successful activation.
     '''
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -159,7 +169,10 @@ def activate(request, uidb64, token):
 @login_required(login_url = 'signin')
 def dashboard(request):
     '''
-    Displays the user's dashboard with their order count and profile information.
+    This view renders the user's dashboard, showing their order count and profile
+    information. It retrieves the user's completed orders from the database and
+    calculates the total count. Additionally, it fetches the user's profile details
+    to display them on the dashboard.
     '''
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = orders.count()
@@ -172,10 +185,16 @@ def dashboard(request):
     return render (request, 'accounts/dashboard.html', context)
 
 
-#___________________________________________________________  DEF RESET_PASSWORD
+#___________________________________________________________  reset_password
 def reset_password(request):
     '''
-    Handles password reset by updating the user's password.
+    This view handles the password reset process. It expects a POST request
+    containing the new password and its confirmation. If the passwords match,
+    it retrieves the user ID from the session, fetches the corresponding user
+    object, updates the password, and saves the changes. A success message is
+    displayed, and the user is redirected to the sign-in page. If the passwords
+    do not match, an error message is displayed, and the user is redirected back
+    to the password reset page.
     '''
     if request.method == 'POST':
         password = request.POST['password']
@@ -195,11 +214,13 @@ def reset_password(request):
         return render(request, 'accounts/reset_password.html')
 
 
-#___________________________________________________________  DEF MY_ORDERS
+#___________________________________________________________  my_orders
 @login_required(login_url='signin')
 def my_orders(request):
     '''
-    Displays a list of the authenticated user's orders that have been completed.
+    This view retrieves orders associated with the authenticated user that are marked as completed.
+    The orders are sorted by the creation date in descending order.
+    The list of orders is passed to the template for rendering.
     '''
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     context = {
@@ -208,11 +229,14 @@ def my_orders(request):
     return render(request, 'accounts/my_orders.html', context)
 
 
-#___________________________________________________________  DEF EDIT_PROFILE
+#___________________________________________________________  edit_profile
 @login_required(login_url='signin')
 def edit_profile(request):
     '''
-    Allows authenticated users to edit their profile information.
+    This view handles the GET and POST requests for editing the user profile.
+    If the request method is POST and both the user form and profile form are valid,
+    it saves the changes and redirects the user to the edit profile page with a success message.
+    If there are any errors, appropriate error messages are displayed.
     '''
     userprofile = get_object_or_404(UserProfile, user=request.user)
     if request.method == 'POST':
@@ -236,11 +260,14 @@ def edit_profile(request):
     return render(request, 'accounts/edit_profile.html', context)
 
 
-#___________________________________________________________  DEF CHANGE_PASSOWORD
+#___________________________________________________________  change_password
 @login_required(login_url='signin')
 def change_password(request):
     '''
-    Allows authenticated users to change their password through dashboard
+    This view handles the POST request for changing the password. It verifies the current password,
+    checks if the new password matches the confirmed password, and updates the password accordingly.
+    If successful, it redirects the user to the change password page with a success message. If there
+    are any errors, appropriate error messages are displayed.
     '''
     if request.method == 'POST':
         current_password = request.POST['current_password']
@@ -265,7 +292,7 @@ def change_password(request):
     return render(request, 'accounts/change_password.html')
 
 
-#___________________________________________________________  DEF ORDER_DETAIL
+#___________________________________________________________  order_detail
 @login_required(login_url='signin')
 def order_detail(request, order_id):
     '''

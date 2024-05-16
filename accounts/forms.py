@@ -2,7 +2,7 @@ from django import forms
 from .models import Account, UserProfile
 
 
-#___________________________________________________________  CLASS REGISTRATIONFORM
+#___________________________________________________________  RegistrationForm
 class RegistrationForm(forms.ModelForm):
     '''
     Form for user registration.
@@ -21,6 +21,12 @@ class RegistrationForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
 
     def clean(self):
+        """
+        Validates password confirmation.
+
+        Raises:
+        - forms.ValidationError: If passwords do not match.
+        """
         cleaned_data = super(RegistrationForm, self).clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
@@ -30,7 +36,10 @@ class RegistrationForm(forms.ModelForm):
                 "Passwords do not match."
             )
     
-    def __init__(self, *args, **kwargs): # Use super for customization
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes form with placeholders and CSS classes for styling.
+        """
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['placeholder'] = 'David'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Hasselhoff'
@@ -40,7 +49,7 @@ class RegistrationForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-#___________________________________________________________  CLASS USERFORM
+#___________________________________________________________  UserForm
 class UserForm(forms.ModelForm):
     '''
     Form for updating user information.

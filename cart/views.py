@@ -160,7 +160,7 @@ def remove_cart(request, product_id, cart_item_id):
     return redirect('cart')
 
 
-#___________________________________________________________  REMOVE_CART_ITEM
+#___________________________________________________________  remove_cart_item
 def remove_cart_item(request, product_id, cart_item_id):
     '''
     Function to remove a specific cart item from the shopping cart.
@@ -175,7 +175,7 @@ def remove_cart_item(request, product_id, cart_item_id):
     return redirect('cart')
 
 
-#___________________________________________________________  CART
+#___________________________________________________________  cart
 def cart(request, total=0, quantity=0, cart_items=None):
     '''
     Function calculates the total price, quantity, tax, and grand total of items in the shopping cart.
@@ -208,7 +208,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
     return render(request, 'products/cart.html', context)
 
 
-#___________________________________________________________  CHECKOUT
+#___________________________________________________________  checkout
 @login_required(login_url='signin')
 def checkout(request, total=0, quantity=0, cart_items=None):
     '''

@@ -1,19 +1,27 @@
-#_________________________________________________________________________  ORDERS/VIEWS.PY
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from cart.models import CartItem
 from .forms import OrderForm
-import datetime
 from .models import Order, Payment, OrderProduct
-
-import json
-
 from products.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-#___________________________________________________________  CLASS PAYMENTS
+import datetime
+import json
+
+
+#___________________________________________________________  payments
 def payments(request):
+    '''
+    This view function receives a POST request with JSON data containing payment details.
+    It retrieves the corresponding order, creates a new payment instance, 
+    and saves it to the database.
+    The order status is updated to indicate that it has been paid for.
+    Cart items are moved to the OrderProduct table, and product stock is reduced accordingly.
+    The user is sent an email confirmation of the order.
+    Finally, the order number and transaction ID are sent back as JSON response data.
+    '''
     body = json.loads(request.body)
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
 
@@ -78,8 +86,15 @@ def payments(request):
     return JsonResponse(data)
 
 
-#___________________________________________________________  CLASS PLACE_ORDER
+#___________________________________________________________  place_order
 def place_order(request, total = 0, quantity=0,):
+    '''
+    This view function handles the checkout process. It calculates the total price,
+    tax, and grand total of the order based on the items in the user's cart. 
+    If the request method is POST and the form is valid,
+    it stores the billing information in the Order table and generates an order number. 
+    Finally, it renders the payments page with the order details.
+    '''
     current_user = request.user
 
     # If the cart count is less than or equal to 0, then redirect back to shop
@@ -100,46 +115,56 @@ def place_order(request, total = 0, quantity=0,):
         form = OrderForm(request.POST)
         if form.is_valid():
             # Store all the billing information inside Order table
-            data                    = Order()
-            data.user               = current_user
-            data.first_name         = form.cleaned_data['first_name']
-            data.last_name          = form.cleaned_data['last_name']
-            data.phone              = form.cleaned_data['phone']
-            data.email              = form.cleaned_data['email']
-            data.address_line_1     = form.cleaned_data['address_line_1']
-            data.address_line_2     = form.cleaned_data['address_line_2']
-            data.country            = form.cleaned_data['country']
-            data.city               = form.cleaned_data['city']
-            data.order_note         = form.cleaned_data['order_note']
-            data.order_total        = grand_total
-            data.tax                = tax
-            data.ip                 = request.META.get('REMOTE_ADDR')
+            data = Order()
+            data.user = current_user
+            data.first_name = form.cleaned_data['first_name']
+            data.last_name = form.cleaned_data['last_name']
+            data.phone = form.cleaned_data['phone']
+            data.email = form.cleaned_data['email']
+            data.address_line_1 = form.cleaned_data['address_line_1']
+            data.address_line_2 = form.cleaned_data['address_line_2']
+            data.country = form.cleaned_data['country']
+            data.city = form.cleaned_data['city']
+            data.order_note = form.cleaned_data['order_note']
+            data.order_total = grand_total
+            data.tax = tax
+            data.ip = request.META.get('REMOTE_ADDR')
             data.save()
             # Generate order number
-            yr                      = int(datetime.date.today().strftime('%Y'))
-            dt                      = int(datetime.date.today().strftime('%d'))
-            mt                      = int(datetime.date.today().strftime('%m'))
-            d                       = datetime.date(yr,mt,dt)
-            current_date            = d.strftime("%Y%m%d") #20210305
-            order_number            = current_date + str(data.id)
-            data.order_number       = order_number
+            yr = int(datetime.date.today().strftime('%Y'))
+            dt = int(datetime.date.today().strftime('%d'))
+            mt = int(datetime.date.today().strftime('%m'))
+            d = datetime.date(yr,mt,dt)
+            current_date = d.strftime("%Y%m%d") #20210305
+            order_number = current_date + str(data.id)
+            data.order_number = order_number
             data.save()
 
-            order                   = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
-            context                 = {
-                'order':        order,
-                'cart_items':   cart_items,
-                'total':        total,
-                'tax':          tax,
-                'grand_total':  grand_total,
+            order = Order.objects.get(
+                user=current_user,
+                is_ordered=False,
+                order_number=order_number
+                )
+            context = {
+                'order': order,
+                'cart_items': cart_items,
+                'total': total,
+                'tax': tax,
+                'grand_total': grand_total,
             }
             return render(request, 'orders/payments.html', context)
     else:
         return redirect('checkout')
     
 
-#___________________________________________________________  CLASS ORDER_COMPLETE
+#___________________________________________________________  order_complete
 def order_complete(request):
+    '''
+    This view retrieves the order number and payment ID from the request's GET parameters.
+    It then retrieves the corresponding order, ordered products,
+    and payment details from the database.
+    Finally, it renders the order completion page with the necessary context.
+    '''
     order_number = request.GET.get('order_number')
     transID = request.GET.get('payment_id')
 

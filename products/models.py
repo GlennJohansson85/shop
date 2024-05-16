@@ -1,11 +1,13 @@
-#_________________________________________________________________________  PRODUCTS/MODELS.PY
 from django.db import models
 from category.models import Category
 from django.urls import reverse
 
 
-#___________________________________________________________  CLASS PRODUCT
+#___________________________________________________________  Product
 class Product(models.Model):
+      '''
+      Model representing a product.
+      '''
       product_name      = models.CharField(max_length=200, unique=True)
       slug              = models.SlugField(max_length=200, unique=True)
       description       = models.TextField(max_length=500, blank=True)
@@ -24,13 +26,22 @@ class Product(models.Model):
             return self.product_name
 
 
-#___________________________________________________________  CLASS VARIATIONMANAGER
+#___________________________________________________________  VariationManager
 class VariationManager(models.Manager):
+      '''
+      Custom manager for variations.
+      '''
       def colors(self):
-            return super(VariationManager, self).filter(variation_category='color', is_active=True)
+            return super(VariationManager, self).filter(
+                  variation_category='color',
+                  is_active=True
+            )
       
       def sizes(self):
-            return super(VariationManager, self).filter(variation_category='size', is_active=True)
+            return super(VariationManager, self).filter(
+                  variation_category='size',
+                  is_active=True
+            )
 
 variation_category_choice = (
       ('color', 'color'),
@@ -38,14 +49,18 @@ variation_category_choice = (
 )
 
 
-#___________________________________________________________  CLASS VARIATION
+#___________________________________________________________  Variation
 class Variation(models.Model):
+      '''
+      Model for product variations.
+      '''
       product = models.ForeignKey(Product, on_delete=models.CASCADE)
-      variation_category = models.CharField(max_length=100, choices=variation_category_choice)
+      variation_category = models.CharField(
+            max_length=100, choices=variation_category_choice
+            )
       variation_value = models.CharField(max_length=100)
       is_active = models.BooleanField(default=True)
       created_date = models.DateTimeField(auto_now=True)
-
       objects = VariationManager()
 
       def __str__(self):

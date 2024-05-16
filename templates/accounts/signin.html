@@ -1,16 +1,13 @@
-<!--  ACCOUNTS/SIGNIN.HTML  -->
 {% extends 'base.html' %}
 
 {% block content %}
 <section class="section-conten padding-y" style="min-height:84vh">
-
-  {% if request.GET.command == 'verification' %}
-  <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
+    {% if request.GET.command == 'verification' %}
+      <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
     Happy to have you with us! Please verify your account in "Verification Email" we´ve just sent. [{{ request.GET.email }}]
     <br><br>
     <a href="{% url 'signin' %}">Login</a>
   </div>
-
   {% else %}
   <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
     <div class="card-body">
@@ -34,8 +31,6 @@
     </div>
   <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
   <br><br>
-  
   {% endif %}
-
 </section>
 {% endblock %}

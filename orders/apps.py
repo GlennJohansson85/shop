@@ -1,8 +1,9 @@
-#_________________________________________________________________________  ORDERS/APPS.PY
 from django.apps import AppConfig
 
 
-#___________________________________________________________  CLASS ORDERSCONFIG
 class OrdersConfig(AppConfig):
+    '''
+    AppConfig class for the orders app.
+    '''
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'orders'

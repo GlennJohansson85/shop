@@ -3,7 +3,7 @@ from products.models import Product, Variation
 from accounts.models import Account
 
 
-#___________________________________________________________  CLASS CART
+#___________________________________________________________  Cart
 class Cart(models.Model):
     '''
     Stores information about the user's shopping cart, including the cart ID and the date
@@ -16,7 +16,7 @@ class Cart(models.Model):
         return self.cart_id
     
 
-#___________________________________________________________  CLASS CARTITEM
+#___________________________________________________________  CartItem
 class CartItem(models.Model):
     '''
     Stores information about an item added to a shopping cart, including the associated

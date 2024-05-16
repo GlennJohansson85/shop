@@ -1,11 +1,13 @@
-#_________________________________________________________________________  ORDERS/MODELS.PY
 from django.db import models
 from accounts.models import Account
 from products.models import Product, Variation
 
 
-#___________________________________________________________  CLASS PAYMENT
+#___________________________________________________________  Payment
 class Payment(models.Model):
+    '''
+    Model class representing a payment made by a user.
+    '''
     user            = models.ForeignKey(Account, on_delete=models.CASCADE)
     payment_id      = models.CharField(max_length=100)
     payment_method  = models.CharField(max_length=100)
@@ -16,9 +18,13 @@ class Payment(models.Model):
     def __str__(self):
         return self.payment_id
 
-#___________________________________________________________  CLASS ORDER
+
+#___________________________________________________________  Order
 class Order(models.Model):
-    STATUS          = (
+    '''
+    Model class representing an order made by a user.
+    '''
+    STATUS = (
         ('New', 'New'),
         ('Accepted', 'Accepted'),
         ('Completed', 'Completed'),
@@ -55,8 +61,12 @@ class Order(models.Model):
     def __str__(self):
         return self.first_name
 
-#___________________________________________________________  CLASS ORDERPRODUCT
+
+#___________________________________________________________  OrderProduct
 class OrderProduct(models.Model):
+    '''
+    Model class representing a product included in an order.
+    '''
     order           = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment         = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     user            = models.ForeignKey(Account, on_delete=models.CASCADE)

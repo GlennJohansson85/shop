@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block content %}
-
-
 <section class="section-content padding-y bg">
 	<div class="container">
 		<h3>Review and Place order</h3>
@@ -21,15 +19,12 @@
 						{% if order.order_note %} <!--optional-->
 							<b>Note:</b> {{order.order_note }}
 						{% endif %}
-
-
 					</div>
 				</div>
 				<div class="card">
 					<h5 class="card-header">Payment Method:</h5>
 					<div class="card-body">
 						<p class="card-text">PayPal</p>
-
 					</div>
 				</div>
 				<div class="card">
@@ -41,11 +36,9 @@
 									<th scope="col">Products:</th>
 									<th scope="col" width="120">Quantity</th>
 									<th scope="col" width="120">Price</th>
-
 								</tr>
 							</thead>
 							<tbody>
-
 								{% for cart_item in cart_items %}
 								<tr>
 									<td>
@@ -72,19 +65,14 @@
 											<small class="text-muted"> $ {{ cart_item.product.price }} each </small>
 										</div>
 									</td>
-
 								</tr>
 								{% endfor %}
-
 							</tbody>
 						</table>
-
 					</div>
 				</div>
-
 			</aside>
 			<aside class="col-lg-4">
-
 				<div class="card">
 					<div class="card-body">
 						<dl class="dlist-align">
@@ -103,25 +91,17 @@
 						<p class="text-center mb-3">
 							<img src="{% static './images/misc/payments.png' %}" height="26">
 						</p>
-
-
 						<div id="paypal-button-container">
-							<!-- PayPal Button -->
 						</div>
-
 					</div>
 				</div>
-
 			</aside>
-
-
 		</div>
 	</div>
 </section>
 
-<!--------------------------------------------  PAYPAL SCRIPT -->
+<!--  PAYPAL SCRIPT  -->
 <script>
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -137,7 +117,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
 	var amount = "{{ grand_total }}"
 	var url = "{% url 'payments' %}"
 	var csrftoken = getCookie('csrftoken');
@@ -146,14 +125,12 @@ function getCookie(name) {
 	var redirect_url = "{% url 'order_complete' %}"
 	// Render the PayPal button into #paypal-button-container
 	paypal.Buttons({
-
 		style: {
 			color: 'blue',
 			shape: 'rect',
 			label: 'pay',
 			height: 40
 		},
-
 		// Set up the transaction
 		createOrder: function(data, actions) {
 			return actions.order.create({
@@ -164,7 +141,6 @@ function getCookie(name) {
 				}]
 			});
 		},
-
 		// Finalize the transaction
 		onApprove: function(data, actions) {
 			return actions.order.capture().then(function(details) {
@@ -192,10 +168,6 @@ function getCookie(name) {
 				}
 			});
 		}
-
-
 	}).render('#paypal-button-container');
 </script>
-
-
 {% endblock %}

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
-#___________________________________________________________  CLASS MYACCOUNTMANAGER
+#___________________________________________________________  MyAccountManager
 class MyAccountManager(BaseUserManager):
       '''
       Custom user manager for creating and managing user accounts.
@@ -41,7 +41,7 @@ class MyAccountManager(BaseUserManager):
             return user
 
 
-#___________________________________________________________  CLASS ACCOUNT
+#___________________________________________________________  Account
 class Account(AbstractBaseUser):
       '''
       Custom user model for user accounts.

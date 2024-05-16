@@ -1,10 +1,12 @@
-#_________________________________________________________________________  ORDERS/FORMS.PY
 from django import forms
 from .models import Order
 
 
-#___________________________________________________________  CLASS ORDERFORM
 class OrderForm(forms.ModelForm):
+    '''
+    Form class is used to create and update orders in the Django application.
+    It is based on the Order model.
+    '''
     class Meta:
         model   = Order
         fields  = [

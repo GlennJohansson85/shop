@@ -1,23 +1,22 @@
-<!--------------------------------------------------------  TEMPLATES/BASE.HTML  -->
 {% load static %}
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<!------------------------------------------------  META  -->
+<!--  META  -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!------------------------------------------------  TITLE  -->
+<!--  TITLE  -->
     <title>I SHOP | We cover all your needs!</title>
 
-<!------------------------------------------------  CSS  -->
+<!--  CSS  -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
     <link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)"/>
 
-<!------------------------------------------------  JS -->
+<!--  JS  -->
     <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
@@ -26,17 +25,17 @@
         }); 
     </script>
 
-<!------------------------------------------------  PAYPAL -->
+<!--  PAYPAL  -->
     <script src="https://www.paypal.com/sdk/js?client-id=ASSMUOg0GvO2i8hz6il5C0c1VFJyfbqiIHB7KmZE1YMpFmmnyVeKclH3hRs2alq1aNk2ybJmKao-0iZv&currency=USD"></script>
 </head>
 <body>
-<!------------------------------------------------  NAVBAR  -->
+
+<!--  NAVBAR  -->
 {% include 'includes/navbar.html' %}
 
 {% block content %}
-<!------------------------------------------------  CHILD TEMPLATES CONTENT -->
+<!--  CHILD TEMPLATES CONTENT  -->
 {% endblock %}
 
-<!------------------------------------------------  FOOTER  -->
+<!-- FOOTER  -->
 {% include 'includes/footer.html' %}
-
