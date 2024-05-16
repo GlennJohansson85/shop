@@ -1,10 +1,14 @@
-#_________________________________________________________________________  CART/MODELS.PY  -->
 from django.db import models
 from products.models import Product, Variation
 from accounts.models import Account
 
+
 #___________________________________________________________  CLASS CART
 class Cart(models.Model):
+    '''
+    Stores information about the user's shopping cart, including the cart ID and the date
+    when it was added.
+    '''
     cart_id     = models.CharField(max_length=250, blank=True)
     date_added  = models.DateField(auto_now_add=True)
 
@@ -14,6 +18,10 @@ class Cart(models.Model):
 
 #___________________________________________________________  CLASS CARTITEM
 class CartItem(models.Model):
+    '''
+    Stores information about an item added to a shopping cart, including the associated
+    user, product, variations, cart, quantity, and whether the item is active.
+    '''
     user        = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     product     = models.ForeignKey(Product, on_delete=models.CASCADE)
     variations  = models.ManyToManyField(Variation, blank=True)

@@ -1,7 +1,6 @@
-#_________________________________________________________________________  ACCOUNTS/APPS.PY
 from django.apps import AppConfig
 
-
+#___________________________________________________________  CLASS ACCOUNTSCONFIG
 class AccountsConfig(AppConfig):
     '''
     Configuration class for the accounts app.

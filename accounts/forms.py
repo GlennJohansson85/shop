@@ -1,4 +1,3 @@
-#_________________________________________________________________________  ACCOUNTS/FORMS.PY
 from django import forms
 from .models import Account, UserProfile
 
