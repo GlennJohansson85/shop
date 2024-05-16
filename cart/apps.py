@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-#___________________________________________________________  CLASS CARTCONFIG
+
 class CartConfig(AppConfig):
     '''
     Configuration class for the cart app.

@@ -2,7 +2,6 @@ from .models import Cart, CartItem
 from .views import _cart_id
 
 
-#___________________________________________________________  DEF COUNTER
 def counter(request):
     '''
     Function to count the number of items in the user's cart.

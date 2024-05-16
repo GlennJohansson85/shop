@@ -1,9 +1,11 @@
-#_________________________________________________________________________  CATEGORY/MODELS.PY
 from django.db import models
 from django.urls import reverse
 
 
 class Category(models.Model):
+    '''
+    Represents a category for grouping related products.
+    '''
     category_name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(max_length=255, blank=True)
