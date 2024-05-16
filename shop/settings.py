@@ -1,13 +1,15 @@
-import os
+import os, env
 import dj_database_url
 from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
 SECRET_KEY = os.environ.get('SECRET_KEY','')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['ishop']
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
