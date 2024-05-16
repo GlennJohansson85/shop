@@ -184,6 +184,7 @@ def reset_password(request):
 
 
 #___________________________________________________________  DEF MY_ORDERS
+@login_required(login_url='signin')
 def my_orders(request):
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     context = {
@@ -193,33 +194,51 @@ def my_orders(request):
 
 
 #___________________________________________________________  DEF EDIT_PROFILE
+@login_required(login_url='signin')
 def edit_profile(request):
-
     userprofile = get_object_or_404(UserProfile, user=request.user)
-
     if request.method == 'POST':
-
         user_form = UserForm(request.POST, instance=request.user)
-
         profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
-
         if user_form.is_valid() and profile_form.is_valid():
-
             user_form.save()
             profile_form.save()
-    
+
             messages.success(request, 'Your Profile has been updated!')
             return redirect('edit_profile')
     else:
-
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=userprofile)
     
-
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
         'userprofile': userprofile,
     }
-
     return render(request, 'accounts/edit_profile.html', context)
+
+
+#___________________________________________________________  DEF CHANGE_PASSOWRD
+@login_required(login_url='signin')
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_new_password = request.POST['confirm_new_password']
+
+        user = Account.objects.get(username__exact=request.user.username)
+
+        if new_password == confirm_new_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Password is now updated!')
+                return redirect('change_password')
+            else:
+                messages.error(request, 'Your current password is not correct!')
+        else:
+            messages.error(request, 'Passwords do not match!')
+            return redirect('change_password')
+
+    return render(request, 'accounts/change_password.html')
