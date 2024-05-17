@@ -8,6 +8,7 @@ Note: The storage unit where we keep our products is rather small so we have a l
 
 ### 1.2 Transactions
 All transactions are handled through PayPal in a secure way. Just buy an item and you´ll see! We even make it easier for you the next time you purchase something because your shipment details will be stored! So now you just have to click on the "confirm transaction" button and its done! To make you feel safe and secure we even send you a confirmation mail that the transactions has be done. So be sure to keep and eye on your inbox.
+![image](https://github.com/GlennJohansson85/shop/assets/139962883/457fe1f3-fab8-4d7d-9a9b-c8fe34f984c2)
 
 ### 1.3 Cart
 If you have a low income you can always come back and your items will be stored in your cart. However, if the items you want are popular and we run out of stock thats a "YOU" problem. You wont be able to buy these items anymore (but for the right price...)
@@ -114,13 +115,11 @@ This is a big project. Instead of screenshots its better to pay the project a vi
 
 ### 5. Unfixed
 ### 5.1 Just a note:
-This is my 5th project restart, I´m writing this just to make you aware that I´ve spent alot of time on this which you cant see in this REPO alone. 
+This is my 5th project restart. The reason why I´m saying this because I dont want you to think that the hours I´ve spent on this repo is the only ones. 
 
-I have 2 other repos for the 5th project here also which I gave up due to migration errors. 
+I have two other projects which I gave up due to migrations error. 
 * https://github.com/GlennJohansson85/hitech
 * https://github.com/GlennJohansson85/techboy
-
-I´ve spent more than 8h/day on this project just this month and still I´m not able to finish all what is expected. However, I´m proud to be able to have done so much by my self. 
 
 ### 5.2 I wish I could have:
  * Fixed the navbar in mobileview
