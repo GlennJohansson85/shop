@@ -130,21 +130,21 @@ I have two other projects which I gave up due to migrations error.
  * Add more style to the the page.
 
 ## 6. Credits
-Websites: 
-https://looka.com/editor/182758083
-https://picflow.com/convert/png-to-ico
-https://ahrefs.com/writing-tools/product-description-generator
-https://stackoverflow.com/questions/1413122/is-autoescape-off-in-django-safe
-https://temp-mail.org/en/
-https://getbootstrap.com/docs/
-https://developer.paypal.com/demo/checkout/#/pattern/server
-https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+### Websites: 
+* https://looka.com/editor/182758083
+* https://picflow.com/convert/png-to-ico
+* https://ahrefs.com/writing-tools/product-description-generator
+* https://stackoverflow.com/questions/1413122/is-autoescape-off-in-django-safe
+* https://temp-mail.org/en/
+* https://getbootstrap.com/docs/
+*  https://developer.paypal.com/demo/checkout/#/pattern/server
+*  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 
-Web - Courses
-CI - Boutique Ado
-Dan Smith - Ecommerce Mentorship & Blueprint
-Samir Kahlot  - Start Your Ecommerce Business
-PythonWebSiteProgramming
-[ DevCourseWeb.com ] Udemy - How to Build a eCommerce Website from Scratch
+###Web - Courses
+* CI - Boutique Ado
+* Dan Smith - Ecommerce Mentorship & Blueprint
+* Samir Kahlot  - Start Your Ecommerce Business
+* PythonWebSiteProgramming
+* [ DevCourseWeb.com ] Udemy - How to Build a eCommerce Website from Scratch
 
 
