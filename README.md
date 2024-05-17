@@ -1,6 +1,5 @@
-# 1. iShop - Ecommerce project
-
-This Django-Python project aims to create a functional E-Commerce website where users can browse products, add them to their cart, place orders, and make payments. The project utilizes Django's powerful framework to implement various functionalities such as user authentication, product management, cart management, order processing, and payment integration.
+# 1. iShop
+#### A Python/Django Frameworks ecommerce project
 
 ## 2. Features
 
@@ -17,7 +16,12 @@ This Django-Python project aims to create a functional E-Commerce website where 
 
 ## 4. Testing
 
-### 4.1 Unfixed bugs
+### 4.1 Unfixed
+
+ Orders: 
+ * You can see how many of one item is in stock however sizes and colours are not implemented in this. 
+ * When Checking the products i wish there was a filter button to filter sizes and colours, Now its just Categories
+ * Customer Reviews - Rating System
 
 ## 5. Deployment
 

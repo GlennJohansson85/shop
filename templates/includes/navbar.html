@@ -34,7 +34,6 @@
                         <img class="logo" src="{% static 'images/banners/banner-big.png' %}">
                     </a>
                 </div>
-                
                 <div class="col-lg col-sm col-md col-6 flex-grow-0">
                     <div class="category-wrap dropdown d-inline-block float-right">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -62,8 +61,11 @@
                         </div>
                     </form>
                 </div>
+
+                
                 <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
+
                         {% if user.id is None %}
                         <div class="widget-header">
                             <small class="title text-muted">Welcome Guest!</small>
@@ -72,6 +74,7 @@
                                 <a href="{% url 'register' %}">Register</a>
                             </div>
                         </div>
+
                         {% else %}
                         <div class="widget-header">
                             <small class="title text-muted">Welcome {{ user.first_name }}!</small>
@@ -81,6 +84,7 @@
                             </div>
                         </div>
                         {% endif %}
+
                         <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
                             <span class="badge badge-pill badge-danger notify">{{ cart_count }}</span>

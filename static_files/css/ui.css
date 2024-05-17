@@ -425,11 +425,6 @@ p:last-child {
   padding-bottom: 1rem;
 }
 
-.brand-wrap .logo, .navbar-brand .logo {
-  margin-right: 7px;
-  max-height: 42px;
-  display: inline-block;
-}
 
 .navbar-main .nav-link {
   font-weight: 500;
