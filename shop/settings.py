@@ -1,4 +1,4 @@
-import os, env
+import os, env.py
 import dj_database_url
 from pathlib import Path
 
@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY','')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['p5-ishop', 'localhost']
 
 
@@ -113,6 +113,7 @@ STATICFILES_DIRS    = [
 MEDIA_URL           = '/media/'
 MEDIA_ROOT          = os.path.join(BASE_DIR, 'media')
 
+# AMAZON
 if 'USE_AWS' in os.environ:
     AWS_S3_OBJECT_PARAMETERS = {
         'Expires':'Thu, 31 Dec 2099 20:00:00 GMT',
@@ -133,8 +134,9 @@ if 'USE_AWS' in os.environ:
     
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+#_________________________________________________________________________
 
-
+# SQL
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
