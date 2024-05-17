@@ -8,6 +8,7 @@ Note: The storage unit where we keep our products is rather small so we have a l
 
 ### 1.2 Transactions
 All transactions are handled through PayPal in a secure way. Just buy an item and you´ll see! We even make it easier for you the next time you purchase something because your shipment details will be stored! So now you just have to click on the "confirm transaction" button and its done! To make you feel safe and secure we even send you a confirmation mail that the transactions has be done. So be sure to keep and eye on your inbox.
+<br>
 ![image](https://github.com/GlennJohansson85/shop/assets/139962883/457fe1f3-fab8-4d7d-9a9b-c8fe34f984c2)
 
 ### 1.3 Cart
